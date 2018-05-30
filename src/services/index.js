@@ -1,0 +1,7 @@
+const releaseDiff = require('./release-diff/release-diff.service.js');
+const release = require('./release/release.service.js');
+// eslint-disable-next-line no-unused-vars
+module.exports = function (app) {
+  app.configure(releaseDiff);
+  app.configure(release);
+};
