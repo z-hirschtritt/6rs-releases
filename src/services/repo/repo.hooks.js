@@ -1,15 +1,4 @@
-'use strict';
 
-const parseJson = function() {
-  return function(context) {
-    context.result.data = context.result.data.map((data) => {
-      data = Object.assign(data, JSON.parse(data.data));
-      delete data.data;
-      return data;
-    });
-    return context;
-  };
-};
 
 module.exports = {
   before: {
@@ -24,7 +13,7 @@ module.exports = {
 
   after: {
     all: [],
-    find: [parseJson()],
+    find: [],
     get: [],
     create: [],
     update: [],

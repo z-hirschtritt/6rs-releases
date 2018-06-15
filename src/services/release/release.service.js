@@ -1,5 +1,5 @@
 // Initializes the `release` service on path `/releases`
-const createService = require('feathers-mongoose');
+const createService = require('feathers-sequelize');
 const createModel = require('../../models/release.model');
 const hooks = require('./release.hooks');
 

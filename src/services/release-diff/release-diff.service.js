@@ -3,7 +3,7 @@ const createService = require('./release-diff.class.js');
 const hooks = require('./release-diff.hooks');
 
 module.exports = function (app) {
-  
+
   const paginate = app.get('paginate');
 
   const options = {

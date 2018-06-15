@@ -1,40 +1,37 @@
-// release-model.js - A mongoose model
-//
-// See http://mongoosejs.com/docs/models.html
+// See http://docs.sequelizejs.com/en/latest/docs/models-definition/
 // for more of what you can do here.
+const Sequelize = require('sequelize');
+const DataTypes = Sequelize.DataTypes;
+
 module.exports = function (app) {
-  const mongooseClient = app.get('mongooseClient');
-  const { Schema } = mongooseClient;
-
-  const RepoSchema = new Schema({
-    name: String,
-    version: String,
-  });
-
-  const TicketSchema = new Schema({
-    jiraId: String,
-    jiraLink: String,
-    type: String, // feature, fix, bug, etc.
-    notes: String,
-  });
-
-  const ReleaseSchema = new Schema({
-    number: {
-      type: Number,
-      unique: true,
+  const sequelizeClient = app.get('sequelizeClient');
+  const release = sequelizeClient.define('release', {
+    tag: {
+      type: DataTypes.STRING,
+      allowNull: false
     },
-    appVersions: {
-      type: [RepoSchema]
+    releaseDate: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      default: new Date()
     },
-    grmChanges: String,
-    deploymentNotes: String,
-    summary: String,
-    tickets: {
-      type: [TicketSchema]
+    data: {
+      type: DataTypes.JSON,
+      allowNull: false
     },
   }, {
-    timestamps: true
+    hooks: {
+      beforeCount(options) {
+        options.raw = true;
+      }
+    }
   });
 
-  return mongooseClient.model('release', ReleaseSchema);
+  // eslint-disable-next-line no-unused-vars
+  release.associate = function (models) {
+    // Define associations here
+    // See http://docs.sequelizejs.com/en/latest/docs/associations/
+  };
+
+  return release;
 };

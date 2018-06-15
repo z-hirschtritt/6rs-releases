@@ -9,19 +9,20 @@ class Service {
   }
 
   async find(params) {
-    const { from, to } = params.query;
+    const {
+      from = 1,
+      to = 40
+    } = params.query;
 
     // get all releases between version numbers given as defined on release model
-    const allreleasesBetween = await this.app.service('releases').find({
+    return await this.app.service('releases').find({
       query: {
-        number: {
+        tag: {
           $gte: Math.min(...[from, to]),
           $lte: Math.max(...[from, to]),
         }
       }
     });
-
-    return allreleasesBetween;
   }
 }
 
