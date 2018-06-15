@@ -1,0 +1,45 @@
+{
+  "name": "6rs-release-client",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "@feathersjs/authentication-client": "^1.0.2",
+    "@feathersjs/feathers": "^3.1.5",
+    "@feathersjs/rest-client": "^1.4.0",
+    "@servicestack/editor": "^0.0.2",
+    "element-ui": "^2.4.0",
+    "feathers-vuex": "^1.4.2",
+    "font-awesome": "^4.7.0",
+    "github-markdown-css": "^2.10.0",
+    "material-design-icons-iconfont": "^3.0.3",
+    "request": "^2.87.0",
+    "request-promise": "^4.2.2",
+    "semantic-ui-css": "^2.3.1",
+    "semantic-ui-vue": "^0.2.10",
+    "socket.io-client": "^2.1.1",
+    "vue": "^2.5.16",
+    "vue-awesome": "^3.0.0",
+    "vue-router": "^3.0.1",
+    "vue-simplemde": "^0.4.8",
+    "vuetify": "^1.0.18",
+    "vuex": "^3.0.1",
+    "vuex-map-fields": "^1.2.3"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.0.0-beta.15",
+    "@vue/cli-plugin-eslint": "^3.0.0-beta.15",
+    "@vue/cli-service": "^3.0.0-beta.15",
+    "@vue/eslint-config-airbnb": "^3.0.0-beta.15",
+    "vue-template-compiler": "^2.5.16"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
+}
