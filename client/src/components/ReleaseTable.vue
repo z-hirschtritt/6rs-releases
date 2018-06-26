@@ -4,14 +4,26 @@
     :items="tableData"
     hide-actions
     class="elevation-1"
-    v-if="!areReleasesLoading"
+    v-model="selected"
+    item-key="tag"
+    :loading="areReleasesLoading"
+    no-data-text=""
   >
+    <v-progress-circular slot="progress" color="blue" indeterminate></v-progress-circular>
     <template slot="items" slot-scope="props">
-      <td>{{ props.item.releaseDate }}</td>
-      <td class="text-xs-right">{{ props.item.tag }}</td>
-      <td class="text-xs-right">{{ props.item.TC }}</td>
-      <td class="text-xs-right">{{ props.item.WFM }}</td>
-      <td class="text-xs-right">{{ props.item.MM }}</td>
+      <td>
+        <v-checkbox
+          v-model="props.selected"
+          primary
+          hide-details
+        ></v-checkbox>
+      </td>
+      <td
+        :key="i"
+        v-for="(header, i) in headers.slice(1)"
+      >
+        {{props.item[header.value]}}
+      </td>
     </template>
   </v-data-table>
 </template>
@@ -21,6 +33,13 @@ import { mapGetters, mapActions, mapState } from 'vuex';
 
 export default {
   name: 'releases',
+  data() {
+    return {
+      selected: [],
+      headers: [],
+      tableData: [],
+    }
+  },
   computed: {
     ...mapState('releases', {
       areReleasesLoading: 'isFindPending',
@@ -28,44 +47,50 @@ export default {
     ...mapGetters('releases', {
       findReleasesInStore: 'find',
     }),
-    releases() {
-      return this.findReleasesInStore().data;
-    },
-    appNames() {
-      return this.releases[0].versions
-      .map(app => {
-        return {
-          text: Object.keys(app)[0],
-          value: Object.keys(app)[0],
-          align: 'center'
-          }
-        })
-    },
-    tableData() {
-      const data = this.releases.map((release) => {
-        const appVersions = release.versions;
-        return Object.assign({
-          id: release.id,
-          tag: release.tag,
-          releaseDate: release.releaseDate,
-        }, ...appVersions);
-      });
-      return data;
-    },
-    headers() {
-      return [
-        { text: 'Release Date', value: 'releaseDate', align: 'center' },
-        { text: 'Tag', value: 'tag', align: 'center' },
-      ].concat(this.appNames);
-    },
   },
   methods: {
     ...mapActions('releases', {
       findReleases: 'find',
     }),
+    async setTableData() {
+      const data = JSON.parse(JSON.stringify(await this.findReleasesInStore().data));
+
+      const uniqueAppNames = [...new Set(
+          data.reduce((acc, release) =>
+            [...acc, ...release.versions.map((version) => version.appName)]
+            , []
+          )
+      )];
+
+      const appHeaders = uniqueAppNames.map((appName) => {
+        return {
+          text: appName,
+          value: appName,
+          align: 'center',
+        };
+      });
+
+      this.headers = [
+        { text: 'Compare', value: 'selected', sortable: false},
+        { text: 'Release Date', value: 'createdAt', align: 'center' },
+        { text: 'Tag', value: 'tag', align: 'center' },
+        ...appHeaders
+      ]
+
+      this.tableData = data.map((release) => {
+        const apps = release.versions.reduce((acc, app) => {
+          acc[app.appName] = app.tag
+	        return acc;
+        }, {});
+        return Object.assign(release, apps);
+      });
+
+      console.log(this.tableData)
+    },
   },
-  created() {
-    this.findReleases();
+  async created() {
+    await this.findReleases();
+    this.setTableData();
   },
 };
 </script>

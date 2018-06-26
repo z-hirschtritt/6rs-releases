@@ -8,16 +8,13 @@ module.exports = function (app) {
   const release = sequelizeClient.define('release', {
     tag: {
       type: DataTypes.STRING,
-      allowNull: false
-    },
-    releaseDate: {
-      type: DataTypes.DATE,
-      allowNull: true,
-      default: new Date()
+      allowNull: false,
+      unique: true,
     },
     data: {
       type: DataTypes.JSON,
-      allowNull: false
+      allowNull: false,
+      unique: true
     },
   }, {
     hooks: {
@@ -32,6 +29,11 @@ module.exports = function (app) {
     // Define associations here
     // See http://docs.sequelizejs.com/en/latest/docs/associations/
   };
+
+  release.sync({
+    force: false,
+  });
+
 
   return release;
 };

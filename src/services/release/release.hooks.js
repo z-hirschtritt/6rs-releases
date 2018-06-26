@@ -1,6 +1,6 @@
 'use strict';
 
-const parseJson = function() {
+const parseAndFlattenData = function() {
   return function(context) {
     context.result.data = context.result.data.map((data) => {
       data = Object.assign(data, JSON.parse(data.data));
@@ -24,7 +24,7 @@ module.exports = {
 
   after: {
     all: [],
-    find: [parseJson()],
+    find: [parseAndFlattenData()],
     get: [],
     create: [],
     update: [],
