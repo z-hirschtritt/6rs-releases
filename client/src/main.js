@@ -10,7 +10,17 @@ import store from './store/index';
 import router from './router';
 
 Vue.use(ElementUI, { locale });
-Vue.use(Vuetify);
+Vue.use(Vuetify, {
+  theme: {
+    primary: '#009688',
+    secondary: '#FFA726',
+    accent: '#D81B60',
+    error: '#f44336',
+    warning: '#ffeb3b',
+    info: '#2196f3',
+    success: '#4caf50',
+  },
+});
 
 Vue.config.productionTip = false;
 
@@ -19,28 +29,3 @@ new Vue({
   store,
   render: h => h(App),
 }).$mount('#app');
-
-Vue.mixin({
-  beforeCreate() {
-    const { sync } = this.$options;
-    if (sync) {
-      if (!this.$options.computed) {
-        this.$options.computed = {};
-      }
-      const attrs = Object.keys(this.$attrs);
-      sync.forEach((key) => {
-        if (!attrs.includes(key)) {
-          Vue.util.warn(`Missing required sync-prop: "${key}"`, this);
-        }
-        this.$options.computed[key] = {
-          get() {
-            return this.$attrs[key];
-          },
-          set(val) {
-            this.$emit(`update:${key}`, val);
-          },
-        };
-      });
-    }
-  },
-});

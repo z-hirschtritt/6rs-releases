@@ -11,12 +11,32 @@ const parseAndFlattenData = function() {
   };
 };
 
+const createNewReleaseTag = function() {
+  return async function(context) {
+    try {
+      const latestRelease = await context.service.find({
+        query: {
+          $limit: 1,
+          $sort: {
+            createdAt: -1
+          }
+        }
+      });
+      let latestTag = parseInt(latestRelease.data[0].tag) || 0;
+      context.data.tag = latestTag + 1;
+    } catch (e) {
+      context.data.tag = 1;
+    }
+    return context;
+  };
+};
+
 module.exports = {
   before: {
     all: [],
     find: [],
     get: [],
-    create: [],
+    create: [createNewReleaseTag()],
     update: [],
     patch: [],
     remove: []

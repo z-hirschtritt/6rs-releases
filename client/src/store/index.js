@@ -14,15 +14,33 @@ Vue.use(FeathersVuex);
 export default new Vuex.Store({
   strict: process.env.NODE_ENV !== 'production',
   state: {
-    newReleaseForm: {
-      tag: '',
-      GRMChanges: '',
-      releaseDate: '',
+    selectedRelease: {},
+    newRelease: {
+      versions: [],
     },
   },
   getters: { getField },
-  mutations: { updateField },
-  actions: {},
+  mutations: {
+    updateField,
+    setSelectedReleaseView(state, release) {
+      state.selectedRelease = release;
+    },
+    setSelectedVersions(state, versions) {
+      state.newRelease.versions = versions;
+    },
+  },
+  actions: {
+    setSelectedReleaseView({ commit }, release) {
+      commit('setSelectedReleaseView', release);
+    },
+    setSelectedVersions({ commit }, selectedVersions) {
+      const versions = Object.entries(selectedVersions).map(version => ({
+        appName: version[0],
+        tag: version[1],
+      }));
+      commit('setSelectedVersions', versions);
+    },
+  },
   plugins: [
     service('releases'),
     service('repos'),

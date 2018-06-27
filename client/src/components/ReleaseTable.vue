@@ -21,6 +21,7 @@
       <td
         :key="i"
         v-for="(header, i) in headers.slice(1)"
+        @click="selectRelease(props.item)"
       >
         {{props.item[header.value]}}
       </td>
@@ -44,6 +45,9 @@ export default {
     ...mapState('releases', {
       areReleasesLoading: 'isFindPending',
     }),
+    ...mapState({
+      selectedReleases: 'selectedReleases'
+    }),
     ...mapGetters('releases', {
       findReleasesInStore: 'find',
     }),
@@ -52,14 +56,16 @@ export default {
     ...mapActions('releases', {
       findReleases: 'find',
     }),
+    selectRelease(release) {
+      this.$store.dispatch('setSelectedReleaseView', release);
+    },
     async setTableData() {
       const data = JSON.parse(JSON.stringify(await this.findReleasesInStore().data));
 
       const uniqueAppNames = [...new Set(
-          data.reduce((acc, release) =>
-            [...acc, ...release.versions.map((version) => version.appName)]
-            , []
-          )
+        data.reduce((acc, release) => {
+          return [...acc, ...release.versions.map((version) => version.appName)]
+        }, [])
       )];
 
       const appHeaders = uniqueAppNames.map((appName) => {
@@ -84,8 +90,6 @@ export default {
         }, {});
         return Object.assign(release, apps);
       });
-
-      console.log(this.tableData)
     },
   },
   async created() {
@@ -94,3 +98,10 @@ export default {
   },
 };
 </script>
+
+<style <style scoped>
+  #selected {
+    background-color: yellow;
+  }
+</style>
+

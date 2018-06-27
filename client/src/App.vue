@@ -1,11 +1,10 @@
 <template>
   <div id="app">
     <v-app>
-        <v-toolbar app color="blue" dense>
-          <v-toolbar-side-icon/>
-          <v-toolbar-items class="hidden-sm-and-down">
-            <v-btn flat to='/releases'>Releases</v-btn>
-            <v-btn flat to='/'>New Release</v-btn>
+        <v-toolbar app color="primary" dense>
+          <v-toolbar-items>
+            <v-btn flat large color="white" to='/releases'>Releases</v-btn>
+            <v-btn flat large color="white" to='/'>Create New Release</v-btn>
           <v-spacer/>
           </v-toolbar-items>
         </v-toolbar>

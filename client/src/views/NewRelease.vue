@@ -1,24 +1,27 @@
 <template>
-  <div class="new-release">
-    <VersionsTable/>
-    <NewReleaseForm/>
-    <MarkdownEditor/>
-    <SubmitForm/>
-  </div>
+  <v-layout row wrap>
+    <v-flex xs12>
+      <VersionsPicker/>
+    </v-flex>
+    <v-flex xs12 mt-3>
+      <MarkdownEditor/>
+    </v-flex>
+    <v-flex xs12 mt-4>
+      <SubmitForm/>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>
 // @ is an alias to /src
-import VersionsTable from '@/components/VersionsTable.vue';
-import NewReleaseForm from '@/components/NewReleaseForm.vue';
-import MarkdownEditor from '@/components/MarkdownEditor.vue';
-import SubmitForm from '@/components/SubmitForm.vue';
+import VersionsPicker from '@/components/NewReleaseForm/VersionsPicker.vue';
+import MarkdownEditor from '@/components/NewReleaseForm/MarkdownEditor.vue';
+import SubmitForm from '@/components/NewReleaseForm/SubmitForm.vue';
 
 export default {
   name: 'new-release',
   components: {
-    VersionsTable,
-    NewReleaseForm,
+    VersionsPicker,
     MarkdownEditor,
     SubmitForm,
   },

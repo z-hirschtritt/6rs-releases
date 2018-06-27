@@ -6,7 +6,7 @@
     :loading="areReposLoading"
     no-data-text=""
     hide-actions
-    class="elevation-1"
+    class="elevation-1 table"
   >
   <v-progress-circular slot="progress" color="blue" indeterminate></v-progress-circular>
     <template slot="items" slot-scope="props">
@@ -20,8 +20,8 @@
           </v-btn>
           <v-list>
             <v-list-tile
-              v-for="(version, j) in repo.releases.map(r => r.tag_name)"
-              :key="j"
+              v-for="(version, i) in repo.releases.map(r => r.tag_name)"
+              :key="i"
               @click="setSelected(repo, version)"
             >
             <v-list-tile-title>{{ version }}</v-list-tile-title>
@@ -58,6 +58,7 @@ export default {
     }),
     setSelected: function(repo, version) {
       this.selectedVersions[0][repo.repoName] = version;
+      this.setSelectedInStore();
       this.$forceUpdate();
     },
     loadData: function() {
@@ -74,10 +75,17 @@ export default {
           return obj;
       }, {});
     },
+    setSelectedInStore: function() {
+      this.$store.dispatch('setSelectedVersions', this.selectedVersions[0])
+    },
   },
   async created() {
     await this.findRepos();
     this.loadData();
+    this.setSelectedInStore();
   },
 };
 </script>
+
+<style scoped>
+</style>
