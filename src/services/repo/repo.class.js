@@ -1,34 +1,51 @@
 /* eslint-disable no-unused-vars */
 
-const github = require('../../common/githubHelper');
-const R = require('ramda');
+const Github = require('../../common/githubHelper');
 
 class Service {
   constructor (options) {
     this.options = options || {};
   }
 
-  async find () {
+  async find (params) {
+    if (Object.keys(params.query).length > 0) {
+      const { repoName, owner, tag } = params.query;
+
+      const github = new Github({repoName, owner});
+      const release = await github.getReleaseByTag(tag);
+
+      return {
+        data: [{
+          id: 0,
+          repoName: repoName,
+          owner: owner,
+          releases: [release]
+        }]
+      };
+    }
+
     const repos = [
-      {name: 'qa-test-repo', owner: 'z-hirschtritt'},
-      {name: 'fake-repo', owner: 'z-hirschtritt'},
-      {name: 'now-cli', owner: 'zeit'},
-      {name: 'hyper', owner: 'zeit'},
-      {name: 'next.js', owner: 'zeit'},
-      {name: 'serve', owner: 'zeit'},
-      {name: 'micro', owner: 'zeit'},
+      {repoName: 'qa-test-repo', owner: 'z-hirschtritt'},
+      {repoName: 'fake-repo', owner: 'z-hirschtritt'},
+      {repoName: 'now-cli', owner: 'zeit'},
+      {repoName: 'hyper', owner: 'zeit'},
+      {repoName: 'next.js', owner: 'zeit'},
+      {repoName: 'serve', owner: 'zeit'},
+      {repoName: 'blueshell', owner: '6RiverSystems'},
     ];
 
     const releases = await Promise.all(repos.map((repo) => {
-      return github.getMasterReleases(repo.name, repo.owner);
+      const github = new Github(repo);
+      return github.getMasterReleases();
     }));
 
     return {
       data: releases.map((releaseList, index) => {
         return {
           id: index,
-          repoName: repos[index].name,
-          releases: releaseList
+          repoName: repos[index].repoName,
+          owner: repos[index].owner,
+          releases: releaseList,
         };
       })
     };

@@ -31,15 +31,15 @@
       }
     },
     methods: {
-      ...mapActions('releases', {
-        createRelease: 'create',
-      }),
-      ...mapState(['newRelease']),
+      ...mapState([
+        'newRelease'
+      ]),
       async submitForm() {
         const { Release } = this.$FeathersVuex;
         const release = new Release({
           data: {
-            versions: this.newRelease().versions
+            versions: this.newRelease().versions,
+            GRMChanges: this.newRelease().GRMChanges,
           }
         })
 

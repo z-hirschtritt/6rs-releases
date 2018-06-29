@@ -22,6 +22,7 @@
         :key="i"
         v-for="(header, i) in headers.slice(1)"
         @click="selectRelease(props.item)"
+        style="padding: 0px; max-width: 10px"
       >
         {{props.item[header.value]}}
       </td>
@@ -57,14 +58,14 @@ export default {
       findReleases: 'find',
     }),
     selectRelease(release) {
-      this.$store.dispatch('setSelectedReleaseView', release);
+      this.$store.commit('setSelectedReleaseView', release);
     },
     async setTableData() {
-      const data = JSON.parse(JSON.stringify(await this.findReleasesInStore().data));
+      const data = JSON.parse(JSON.stringify(this.findReleasesInStore().data));
 
       const uniqueAppNames = [...new Set(
         data.reduce((acc, release) => {
-          return [...acc, ...release.versions.map((version) => version.appName)]
+          return [...acc, ...release.versions.map((version) => version.repo.repo)]
         }, [])
       )];
 
@@ -85,7 +86,7 @@ export default {
 
       this.tableData = data.map((release) => {
         const apps = release.versions.reduce((acc, app) => {
-          acc[app.appName] = app.tag
+          acc[app.repo.repo] = app.tag || app.tag_name
 	        return acc;
         }, {});
         return Object.assign(release, apps);
@@ -95,13 +96,7 @@ export default {
   async created() {
     await this.findReleases();
     this.setTableData();
+    this.selectRelease(this.findReleasesInStore().data[0])
   },
 };
 </script>
-
-<style <style scoped>
-  #selected {
-    background-color: yellow;
-  }
-</style>
-

@@ -1,7 +1,7 @@
 <template>
   <v-layout row wrap>
-    <v-flex xs12>
-      <VersionsPicker/>
+    <v-flex xs12 mt-3>
+      <VersionSelectors/>
     </v-flex>
     <v-flex xs12 mt-3>
       <MarkdownEditor/>
@@ -14,16 +14,16 @@
 
 <script>
 // @ is an alias to /src
-import VersionsPicker from '@/components/NewReleaseForm/VersionsPicker.vue';
 import MarkdownEditor from '@/components/NewReleaseForm/MarkdownEditor.vue';
 import SubmitForm from '@/components/NewReleaseForm/SubmitForm.vue';
+import VersionSelectors from '@/components/NewReleaseForm/VersionSelectors.vue';
 
 export default {
   name: 'new-release',
   components: {
-    VersionsPicker,
     MarkdownEditor,
     SubmitForm,
+    VersionSelectors,
   },
 };
 </script>

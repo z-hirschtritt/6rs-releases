@@ -1,20 +1,18 @@
 <template>
-  <div id="app">
-    <v-app>
-        <v-toolbar app color="primary" dense>
-          <v-toolbar-items>
-            <v-btn flat large color="white" to='/releases'>Releases</v-btn>
-            <v-btn flat large color="white" to='/'>Create New Release</v-btn>
-          <v-spacer/>
-          </v-toolbar-items>
-        </v-toolbar>
-      <v-content>
-        <v-container fluid>
-          <router-view/>
-        </v-container>
-      </v-content>
-    </v-app>
-  </div>
+  <v-app>
+      <v-toolbar app color="primary" dense>
+        <v-toolbar-items>
+          <v-btn flat large color="white" to='/'>Releases</v-btn>
+          <v-btn flat large color="white" to='/new-release'>Create New Release</v-btn>
+        <v-spacer/>
+        </v-toolbar-items>
+      </v-toolbar>
+    <v-content>
+      <v-container fluid>
+        <router-view/>
+      </v-container>
+    </v-content>
+  </v-app>
 </template>
 
 <style>

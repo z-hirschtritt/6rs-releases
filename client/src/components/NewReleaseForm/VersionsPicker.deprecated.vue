@@ -13,6 +13,7 @@
       <td
         :key="repo.id"
         v-for="repo in repos"
+        style="padding: 0px"
       >
         <v-menu bottom offset-y>
           <v-btn flat slot="activator">
@@ -86,6 +87,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-</style>

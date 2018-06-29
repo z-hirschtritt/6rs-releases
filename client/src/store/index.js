@@ -17,6 +17,7 @@ export default new Vuex.Store({
     selectedRelease: {},
     newRelease: {
       versions: [],
+      GRMChanges: '',
     },
   },
   getters: { getField },
@@ -29,22 +30,12 @@ export default new Vuex.Store({
       state.newRelease.versions = versions;
     },
   },
-  actions: {
-    setSelectedReleaseView({ commit }, release) {
-      commit('setSelectedReleaseView', release);
-    },
-    setSelectedVersions({ commit }, selectedVersions) {
-      const versions = Object.entries(selectedVersions).map(version => ({
-        appName: version[0],
-        tag: version[1],
-      }));
-      commit('setSelectedVersions', versions);
-    },
-  },
+  actions: {},
   plugins: [
     service('releases'),
     service('repos'),
     service('release-diffs'),
+    service('jira'),
     // auth({ userService: 'users' })
   ],
 });
