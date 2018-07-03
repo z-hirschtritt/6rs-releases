@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 const Jira = require('../../common/jiraHelper');
+const errors = require('@feathersjs/errors');
 
 class Service {
   constructor (options) {
@@ -11,24 +12,30 @@ class Service {
   }
 
   async find (params) {
-    const jira = new Jira(this.app);
-    let data = await jira.getJiraTicket(
-      params.query.ticket,
-      'customfield_10500' +
-      'status.name' +
-      'description' +
-      'summary' +
-      'key'
-    );
+    if (params.query.ticket) {
+      const { ticket } = params.query;
 
-    return {
-      id: data.id,
-      ticket: data.key,
-      self: data.self,
-      summary: data.summary,
-      description: data.fields.description,
-      releaseNotes: data.fields.customfield_10500,
-    };
+      const jira = new Jira(this.app);
+      let data = await jira.getJiraTicket(
+        ticket,
+        'customfield_10500,' +
+        'status.name,' +
+        'description,' +
+        'summary,' +
+        'key'
+      ).catch(err => err);
+
+      return {
+        id: data.id,
+        ticket: data.key,
+        self: data.self,
+        summary: data.summary,
+        description: data.fields.description,
+        releaseNotes: data.fields.customfield_10500,
+      };
+    } else {
+      return new errors.BadRequest('Need to provide ticket in query');
+    }
   }
 
 }

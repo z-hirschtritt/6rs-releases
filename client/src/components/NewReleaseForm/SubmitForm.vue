@@ -1,15 +1,13 @@
 <template>
   <div class="text-xs-center">
       <v-btn
-        :loading="loading"
-        :disabled="loading"
         color="primary"
         @click="submitForm()"
       >
         Create New Release
       </v-btn>
       <v-snackbar
-          timeout=6000
+          :timeout=6000
           bottom
           multi-line
           v-model="snackbar"

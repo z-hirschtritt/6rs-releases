@@ -6,6 +6,9 @@
     <v-flex xs12 mt-3>
       <MarkdownEditor/>
     </v-flex>
+    <v-flex xs12 mt-3>
+      <JiraTickets/>
+    </v-flex>
     <v-flex xs12 mt-4>
       <SubmitForm/>
     </v-flex>
@@ -17,6 +20,7 @@
 import MarkdownEditor from '@/components/NewReleaseForm/MarkdownEditor.vue';
 import SubmitForm from '@/components/NewReleaseForm/SubmitForm.vue';
 import VersionSelectors from '@/components/NewReleaseForm/VersionSelectors.vue';
+import JiraTickets from '@/components/JiraTickets.vue';
 
 export default {
   name: 'new-release',
@@ -24,6 +28,7 @@ export default {
     MarkdownEditor,
     SubmitForm,
     VersionSelectors,
+    JiraTickets,
   },
 };
 </script>

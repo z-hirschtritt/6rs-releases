@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 
 const Github = require('../../common/githubHelper');
+const errors = require('@feathersjs/errors');
 
 class Service {
   constructor (options) {
@@ -9,19 +10,31 @@ class Service {
 
   async find (params) {
     if (Object.keys(params.query).length > 0) {
-      const { repoName, owner, tag } = params.query;
+      if (params.query.tag) {
+        const { repoName, owner, tag } = params.query;
 
-      const github = new Github({repoName, owner});
-      const release = await github.getReleaseByTag(tag);
+        const github = new Github({repoName, owner});
+        const release = await github.getReleaseByTag(tag);
 
-      return {
-        data: [{
-          id: 0,
-          repoName: repoName,
-          owner: owner,
-          releases: [release]
-        }]
-      };
+        return {
+          data: [{
+            id: 0,
+            repoName: repoName,
+            owner: owner,
+            releases: [release]
+          }]
+        };
+      } else if (params.query.repoName && params.query.owner) {
+        const { repoName, owner } = params.query;
+        const github = new Github({repoName, owner});
+
+        return await github.getMasterReleases();
+      } else {
+        return new errors.BadRequest('Need to include repoName, owner', {
+          query: params.query
+        });
+      }
+
     }
 
     const repos = [

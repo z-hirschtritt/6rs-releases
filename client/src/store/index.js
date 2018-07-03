@@ -18,9 +18,12 @@ export default new Vuex.Store({
     newRelease: {
       versions: [],
       GRMChanges: '',
+      jiraDetails: [],
     },
   },
-  getters: { getField },
+  getters: {
+    getField,
+  },
   mutations: {
     updateField,
     setSelectedReleaseView(state, release) {
@@ -36,7 +39,6 @@ export default new Vuex.Store({
     service('repos'),
     service('release-diffs'),
     service('jira'),
-    // auth({ userService: 'users' })
   ],
 });
 
