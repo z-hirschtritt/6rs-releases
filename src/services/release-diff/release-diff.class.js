@@ -33,7 +33,7 @@ class Service {
   async create(data) {
     const { currentRelease } = data;
     let previousRelease;
-
+    
     if (data.previousRelease) {
       previousRelease = data.previousRelease;
     } else {

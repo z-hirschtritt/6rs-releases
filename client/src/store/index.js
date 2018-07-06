@@ -23,17 +23,32 @@ export default new Vuex.Store({
   },
   getters: {
     getField,
+    getNewRelease(state) {
+      return state.newRelease.versions;
+    },
   },
   mutations: {
     updateField,
     setSelectedReleaseView(state, release) {
       state.selectedRelease = release;
     },
-    setSelectedVersions(state, versions) {
+    updateNewReleaseVersions(state, versions) {
       state.newRelease.versions = versions;
     },
   },
-  actions: {},
+  actions: {
+    createAndSetDiff({ commit, dispatch, state }, currentRelease = null, previousRelease = null) {
+      commit('release-diffs/clearAll');
+      dispatch('release-diffs/create', {
+        currentRelease: currentRelease || state.newRelease,
+        previousRelease,
+      });
+    },
+    updateNewReleaseVersions({ commit, dispatch }, versions) {
+      commit('updateNewReleaseVersions', versions);
+      dispatch('createAndSetDiff');
+    },
+  },
   plugins: [
     service('releases'),
     service('repos'),

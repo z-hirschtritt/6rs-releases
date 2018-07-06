@@ -34,7 +34,6 @@ export default {
     }),
     ...mapGetters('repos', {
       findReposInStore: 'find',
-      getCurrentRelease: 'current'
     }),
     selected() {
       return this.$store.state.newRelease.versions;
@@ -44,22 +43,13 @@ export default {
     }
   },
   methods: {
-    loadInitialSelected() {
-      const initialSelected = this.repos.map(repo => repo.releases[0]);
-      this.$store.commit('setSelectedVersions', initialSelected)
-    },
-    ...mapActions('repos', {
-      findRepos: 'find',
-    }),
     handleSelection(index, value) {
       this.selected[index] = value;
-      this.$store.commit('setSelectedVersions', this.selected);
+      this.$store.dispatch('updateNewReleaseVersions', this.selected);
     }
   },
-  async beforeMount() {
-    await this.findRepos();
-    this.loadInitialSelected();
-  }
+  created() {
+  },
 }
 </script>
 

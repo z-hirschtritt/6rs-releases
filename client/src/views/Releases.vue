@@ -6,6 +6,9 @@
     <v-container fluid>
       <SingleReleaseView/>
     </v-container>
+    <v-container fluid>
+      <JiraTickets/>
+    </v-container>
   </div>
 </template>
 
@@ -13,12 +16,17 @@
 // @ is an alias to /src
 import ReleaseTable from '@/components/ReleaseTable.vue';
 import SingleReleaseView from '@/components/SingleReleaseView.vue';
+import SingleReleaseView from '@/components/JiraTickets.vue';
 
 export default {
   name: 'releases',
   components: {
     ReleaseTable,
     SingleReleaseView,
+    JiraTickets,
+  },
+  beforeCreate() {
+
   },
 };
 </script>
