@@ -14,8 +14,8 @@
       <td>
         <v-checkbox
           v-model="props.selected"
-          primary
           hide-details
+          color="secondary"
         ></v-checkbox>
       </td>
       <td
@@ -32,6 +32,7 @@
 
 <script>
 import { mapGetters, mapActions, mapState } from 'vuex';
+import * as R from 'ramda';
 
 export default {
   name: 'releases',
@@ -58,10 +59,10 @@ export default {
       findReleases: 'find',
     }),
     selectRelease(release) {
-      this.$store.commit('setSelectedReleaseView', release);
+      this.$store.dispatch('setSelectedReleaseView', release);
     },
-    async setTableData() {
-      const data = JSON.parse(JSON.stringify(this.findReleasesInStore().data));
+    setTableData() {
+      const data = R.clone(this.findReleasesInStore().data);
 
       const uniqueAppNames = [...new Set(
         data.reduce((acc, release) => {
@@ -74,12 +75,14 @@ export default {
           text: appName,
           value: appName,
           align: 'center',
+          sortable: false,
         };
       });
 
       this.headers = [
         { text: 'Compare', value: 'selected', sortable: false},
         { text: 'Release Date', value: 'createdAt', align: 'center' },
+        { text: 'Id', value: 'id', align: 'center' },
         { text: 'Tag', value: 'tag', align: 'center' },
         ...appHeaders
       ]
@@ -96,7 +99,7 @@ export default {
   async created() {
     await this.findReleases();
     this.setTableData();
-    this.selectRelease(this.findReleasesInStore().data[0])
+    this.selectRelease(this.findReleasesInStore().data.slice(-1)[0])
   },
 };
 </script>

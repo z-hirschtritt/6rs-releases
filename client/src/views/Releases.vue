@@ -16,7 +16,7 @@
 // @ is an alias to /src
 import ReleaseTable from '@/components/ReleaseTable.vue';
 import SingleReleaseView from '@/components/SingleReleaseView.vue';
-import SingleReleaseView from '@/components/JiraTickets.vue';
+import JiraTickets from '@/components/JiraTickets.vue';
 
 export default {
   name: 'releases',
@@ -24,9 +24,6 @@ export default {
     ReleaseTable,
     SingleReleaseView,
     JiraTickets,
-  },
-  beforeCreate() {
-
   },
 };
 </script>

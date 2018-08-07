@@ -48,8 +48,6 @@ export default {
       this.$store.dispatch('updateNewReleaseVersions', this.selected);
     }
   },
-  created() {
-  },
 }
 </script>
 

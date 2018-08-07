@@ -32,7 +32,7 @@
         :href="getLink(ticket.ticket)"
         >
           <v-card-title primary-title>
-            <h3 class="headline mb-0">{{ticket.ticket}}</h3>
+            <h3 class="mb-1">{{ticket.ticket}}</h3>
           </v-card-title>
           <v-card-text>
             <strong>Description:</strong>

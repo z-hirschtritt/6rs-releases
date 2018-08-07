@@ -37,6 +37,17 @@ export default new Vuex.Store({
     },
   },
   actions: {
+    async setSelectedReleaseView({ commit, dispatch, getters }, release) {
+      commit('setSelectedReleaseView', release);
+
+      const previousRelease = getters['releases/find']({
+        query: { id: release.id - 1, $limit: 1 },
+      }).data[0];
+
+      dispatch('createAndSetDiff', release, previousRelease);
+
+      console.log({ currentRelease: release, previousRelease }, 'Getting new diff');
+    },
     createAndSetDiff({ commit, dispatch, state }, currentRelease = null, previousRelease = null) {
       commit('release-diffs/clearAll');
       dispatch('release-diffs/create', {
